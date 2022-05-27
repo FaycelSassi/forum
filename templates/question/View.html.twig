@@ -7,11 +7,30 @@
 {% block javascripts %}
 {% endblock %}
 {% block body %}
+<a href="{{path('logout')}}">logout</a>
 {% for quest in quests %}
-<div>
-    <div>{{quest.titre}}</div>
-    <div>{{quest.question}}</div>
-    <div>{{quest.user.email}}</div>
-</div>
+    <div>
+        <div>{{quest.titre}}</div>
+        <div>{{quest.question}}</div>
+        <div>{{quest.user.email}}</div>
+    </div>
+    <div>
+        <form action="{{path('Comment')}}" action="post">
+            <input type="Hidden" name="user" id="user" value="{{quest.user.id}}">
+            <input type="Hidden" name="quest" id="quest" value="{{quest.id}}">
+            <label for="comment">Your comment:</label>
+            <input type="text" name="comment" id="comment" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    
+    {% for cmnt in comment %}
+        {% if cmnt.question == quest %}
+        <div>
+           &nbsp;&nbsp;<b> {{cmnt.user.email}}</b>
+        </div>
+        <div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{cmnt.comment}} </div>
+        {% endif %}
+    {% endfor %}
 {% endfor %}
 {% endblock %}

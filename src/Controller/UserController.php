@@ -41,6 +41,9 @@ class UserController extends AbstractController
     public function login(AuthenticationUtils $AU){
         $error=$AU->getLastAuthenticationError();
         $username=$AU->getLastUsername();
+        //if($username){
+         //   return $this->redirect("/ViewQuests");
+        //}
         return $this->render('main/main.html.twig', [
             "error"=>$error,"username"=>$username
         ]);
