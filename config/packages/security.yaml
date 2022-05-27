@@ -19,7 +19,12 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path: logout
+                target: login
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -30,7 +35,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: /ViewQuests, roles: ROLE_USER }
 
 when@test:
     security:
