@@ -22,31 +22,67 @@ class QuestionController extends AbstractController
      * IsGranted("ROLE_USER")
      */
     public function index(QuestionRepository $QR,CommentsRepository $CR): Response{
+        $user=$this->getUser();
         $cmnts=$CR->findAll();
         $quests=$QR->findAll();
         return $this->render('question/view.html.twig', [
-            "quests"=>$quests,"comment"=>$cmnts
+            "quests"=>$quests,"comment"=>$cmnts,"user"=>$user
         ]);
+    }
+    /**
+     * @Route("/ViewDetails", name="ViewDetails")
+     * IsGranted("ROLE_USER")
+     */
+    public function ViewDetails(Request $request,QuestionRepository $QR,CommentsRepository $CR): Response{
+        $user=$this->getUser();
+        $quest=$QR->find($request->query->get('quest'));
+        $cmnts=$CR->findBy(['Question'=>$quest]);
+        return $this->render('question/viewComments.html.twig', [
+            "quest"=>$quest,"comment"=>$cmnts,"user"=>$user
+        ]);
+    }
+    /**
+     * @Route("/deltequest", name="deltequest")
+     * IsGranted("ROLE_USER")
+     */
+    public function deltequest(Request $request,CommentsRepository $CR,QuestionRepository $QR,EntityManagerInterface $manager): Response {
+      $quest=$QR->find($request->query->get('quest'));
+      $manager->remove($quest);
+        $manager->flush();
+        return $this->redirect("/ViewQuests");
     }
     /**
      * @Route("/Comment", name="Comment")
      * IsGranted("ROLE_USER")
      */
-    public function addComment(Request $request,UserRepository $UR,QuestionRepository $QR,EntityManagerInterface $manager): Response {
+    public function addComment(Request $request,CommentsRepository $CR,QuestionRepository $QR,EntityManagerInterface $manager): Response {
         $comment= new Comments();
-        $user = new User();
         $quest= new Question();
-        $user=$UR->find($request->query->get('user'));
-        $comment->setUser($user);
+        $comment->setUser($this->getUser());
         $quest=$QR->find($request->query->get('quest'));
         $comment->setComment($request->query->get('comment'));
         $comment->setQuestion($quest);
         $manager->persist($comment);
         $manager->flush();
-        return $this->redirect("/ViewQuests");
+        $user=$this->getUser();
+        $cmnts=$CR->findBy(['Question'=>$quest]);
+        return $this->render('question/viewComments.html.twig', [
+            "quest"=>$quest,"comment"=>$cmnts,"user"=>$user
+        ]);
     }
     /**
-     * @Route("/create", name="app_question")
+     * @Route("/deletecmnt", name="deletecmnt")
+     * IsGranted("ROLE_USER")
+     */
+    public function deleteComment(Request $request,CommentsRepository $CR,EntityManagerInterface $manager):Response{
+        $comment= $CR->find($request->query->get('idcmnt'));
+        $manager->remove($comment);
+        $manager->flush();
+        return $this->redirect("/ViewQuests");
+    }
+
+    /**
+     * @Route("/createpost", name="createpost")
      * IsGranted("ROLE_USER")
      */
     public function create(Request $request,EntityManagerInterface $manager): Response
@@ -54,7 +90,8 @@ class QuestionController extends AbstractController
         $question= new Question();
         $formquest=$this->createForm(QuestionType:: class,$question);
         $formquest->handleRequest($request);
-        if($formquest->isSubmitted()and$formquest->isValid()){
+        if($formquest->isSubmitted() and $formquest->isValid()){
+
             $question->setUser($this->getUser());
             $manager->persist($question);
             $manager->flush();

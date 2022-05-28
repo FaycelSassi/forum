@@ -17,7 +17,6 @@ class QuestionType extends AbstractType
         $builder
             ->add('Titre',TextType::class)
             ->add('question',TextAreaType::class)
-            ->add('Submit',SubmitType::class)
         ;
     }
 

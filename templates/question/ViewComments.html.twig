@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login!{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="style.css">
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
+{% block body %}
+<div class="container">
+
+<a href="{{path('logout')}}">logout</a>
+<a href="{{path('ViewQuests')}}">go back</a>
+<hr>
+    <div>
+    <form action="{{path('deltequest')}}" action="post">
+        <div><b>{{quest.titre}}</b></div>
+        <div>{{quest.question}}</div>
+        <div>{{quest.user.email}}</div>
+            <input type="Hidden" name="quest" id="quest" value="{{quest.id}}">
+            {% if quest.user == user %}
+        <button type="submit">Delete</button>
+        {% endif %}
+    </form>
+    </div>
+    <div>
+        <form action="{{path('Comment')}}" action="post">
+            <input type="Hidden" name="user" id="user" value="{{quest.user.id}}">
+            <input type="Hidden" name="quest" id="quest" value="{{quest.id}}">
+            <label for="comment">add a new comment:</label>
+            <input type="text" name="comment" id="comment" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    
+    {% for cmnt in comment %}
+    <hr>
+        {% if cmnt.question == quest %}
+        {% if cmnt.user == user  %}
+        <form action="{{path('deletecmnt')}}">
+            <div>
+            &nbsp;&nbsp;<b> {{cmnt.user.email}}</b>
+            </div>
+            <div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{cmnt.comment}} </div>
+            <input type="hidden" name="idcmnt" id="idcmnt" value="{{cmnt.id}}">
+            <button type="submit">delete</button>
+        </form>
+        {% else %}
+            <div>
+            &nbsp;&nbsp;<b> {{cmnt.user.email}}</b>
+            </div>
+            <div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{cmnt.comment}} </div>
+            <input type="hidden" name="idcmnt" id="idcmnt">
+        {% endif %}
+        {% endif %}
+{% endfor %}
+</div>
+{% endblock %}

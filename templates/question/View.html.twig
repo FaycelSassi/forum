@@ -3,34 +3,30 @@
 {% block title %}Login!{% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" href="style.css">
 {% endblock %}
 {% block javascripts %}
 {% endblock %}
 {% block body %}
+<div class="container">
 <a href="{{path('logout')}}">logout</a>
+<a href="{{path('createpost')}}">Add a new post</a>
+
 {% for quest in quests %}
+    <hr>
     <div>
-        <div>{{quest.titre}}</div>
+        <div><b>{{quest.titre}}</b></div>
         <div>{{quest.question}}</div>
-        <div>{{quest.user.email}}</div>
+        <div class="small">{{quest.user.email}}</div>
     </div>
     <div>
-        <form action="{{path('Comment')}}" action="post">
-            <input type="Hidden" name="user" id="user" value="{{quest.user.id}}">
+        <form action="{{path('ViewDetails')}}" action="post">
             <input type="Hidden" name="quest" id="quest" value="{{quest.id}}">
-            <label for="comment">Your comment:</label>
-            <input type="text" name="comment" id="comment" required>
-            <button type="submit">Send</button>
+            <label for="comment">More details:</label>
+            <button type="submit">View discussion</button>
         </form>
     </div>
     
-    {% for cmnt in comment %}
-        {% if cmnt.question == quest %}
-        <div>
-           &nbsp;&nbsp;<b> {{cmnt.user.email}}</b>
-        </div>
-        <div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{cmnt.comment}} </div>
-        {% endif %}
-    {% endfor %}
 {% endfor %}
+</div>
 {% endblock %}

@@ -3,27 +3,31 @@
 {% block title %}Sign in!{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+
 {% endblock %}
 {% block javascripts %}
 {% endblock %}
 {% block body %}
-    {{form_start(formRegistration)}}
-        <div class="row">
-            <div class="col-md-12">
-                {{form_row(formRegistration.email)}}
-            </div>
-            <div class="col-md-12">
-                {{form_row(formRegistration.password)}}
-            </div>
-            <div class="col-md-12">
-                {{form_row(formRegistration.Submit)}}
-            </div>
-            <div class="my-custom-class-for-errors">
-                {{form_errors(formRegistration)}}
+    <div class="center">
+    <h1>Create a new user</h1>
+        {{form_start(formRegistration)}}
+            <div class="">
+                <div class="txt">
+                    {{form_row(formRegistration.email)}}
+                </div>
+                <div class="txt">
+                    {{form_row(formRegistration.password)}}
+                </div>
+                <div class="">
+                    <input type="submit" value="Register">
+                </div>
+                <div class="signup_link">
+                    Already have an account? <a href="{{path('login')}}">login</a>
+                </div>
+                <div class="my-custom-class-for-errors">
+                    {{form_errors(formRegistration)}}
+                </div>
             </div>
         </div>
     {{form_end(formRegistration)}}

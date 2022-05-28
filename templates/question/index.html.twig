@@ -3,24 +3,27 @@
 {% block title %}Post a Question!{% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" href="style.css">
+
 {% endblock %}
 {% block javascripts %}
 {% endblock %}
 {% block body %}
-{{form_start(formquest)}}
-        <div class="row">
-            <div class="col">
+<div class="center">
+<h1>New post</h1>
+    {{form_start(formquest)}}
+            <div class="txt">
                 {{form_row(formquest.Titre)}}
             </div>
-            <div class="col">
-                {{form_row(formquest.question)}}
+            <div class="txt">
+                {{form_row(formquest.question,{ 'label': 'Description' })}}
             </div>
-            <div class="col">
-                {{form_row(formquest.Submit)}}
+            <div class="txt">
+                    <input type="submit" value="Register">
             </div>
             <div class="my-custom-class-for-errors">
                 {{form_errors(formquest)}}
             </div>
-        </div>
     {{form_end(formquest)}}
+    </div>
 {% endblock %}

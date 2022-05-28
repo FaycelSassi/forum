@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/register", name="create")
+     * @Route("/register", name="register")
      */
     public function index(Request $request,UserPasswordHasherInterface $encoder,EntityManagerInterface $manager
     ): Response
@@ -30,6 +30,7 @@ class UserController extends AbstractController
             $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
             $manager->flush();
+            return $this->redirect("/");
         }
         return $this->render('user/index.html.twig', [
             "formRegistration"=>$formRegistration->createView(),

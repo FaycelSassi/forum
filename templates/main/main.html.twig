@@ -3,18 +3,33 @@
 {% block title %}Login!{% endblock %}
 
 {% block stylesheets %}
+<link rel="stylesheet" href="style.css">
+
 {% endblock %}
 {% block javascripts %}
 {% endblock %}
 {% block body %}
-{% if error %}
-<div>{{ error.messageKey|trans(error.messageData,'security') }}</div>
-{% endif %}
-<form action="{{path('login')}}" method="post">
-    <label for="username">Email</label>
-    <input type="email" id="username" name="_username" value="{{username}}" />
-    <label for="password">Password</label>
-    <input type="password" id="password" name="_password" value="" />
-    <button type="submit">login</button>
-</form>
+<div class="center">
+    <h1>Forum</h1>
+    <form action="{{path('login')}}" method="post">
+    <div class="txt_field">
+        <input type="email" id="username" name="_username" value="{{username}}" />
+        <span></span>
+        <label>Email</label>
+    </div>
+    <div class="txt_field">
+        <input type="password" id="password" name="_password" value="" />
+        <span></span>
+        <label>Password</label>
+    </div>
+    <input type="submit" value="Login">
+    <div class="signup_link">
+          Not a member? <a href="{{path('register')}}">Signup</a>
+    </div>
+    {% if error %}
+    <div class="txt_field">{{ error.messageKey|trans(error.messageData,'security') }}</div>
+    {% endif %}
+     </form>
+    
+</div>
 {% endblock %}
